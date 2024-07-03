@@ -2,9 +2,8 @@ import math
 class BinarySearch:
 
     def __init__(self, AList):
-        self.alist=AList
         AList.sort(reverse=False)
-        print(self.alist)
+        print(AList)
 
 
     def BS(self,NumberToFind, ListofNumberstoPass):
@@ -40,6 +39,3 @@ B= BinarySearch(Li)
 print("enter the number to Search")
 N=int(input())
 B.BS(N,Li)
-
-
-
