@@ -48,7 +48,6 @@ def PrintNodesPostOrder(rootNode):
         PrintNodesPostOrder(rootNode.rightChild)
         PrintNodesPostOrder(rootNode.leftChild)
 
-
 #create Adjucency list, a Dictionary contain multiple [key, value] pairs, where each [Key] is the current Rootnode
 #... data and each [value] will be the list of it's two children's data [leftchild Data, RightChild Data]
 # Input: myDict = {}
@@ -70,7 +69,20 @@ def makeAdjacencyListDictionary(rootNode):
 
         makeAdjacencyListDictionary(rootNode.rightChild)
         return dict
+def makeAdjacencyListDictionaryReverse(rootNode):
+    if rootNode==None:
+        return
+    else:
+        dictRev[rootNode.data]=[]
+        makeAdjacencyListDictionaryReverse(rootNode.rightChild)
 
+        if rootNode.rightChild:
+            dictRev[rootNode.data].append(rootNode.rightChild.data)
+        if rootNode.leftChild:
+            dictRev[rootNode.data].append(rootNode.leftChild.data)
+
+        makeAdjacencyListDictionaryReverse(rootNode.leftChild)
+        return dictRev
 
 def BFS(AdjcListDict):
     Q= collections.deque('g')
@@ -83,6 +95,34 @@ def BFS(AdjcListDict):
             Q.append(li)
 
     print(explored)  # traversal: sequence of visiting nodes
+def DFS(AdjcListDict):
+    #Stack = collections.deque('g')   #also works the same
+    Stack = ['g']
+    explored = []
+
+    while Stack:
+        PoppedNode = Stack.pop()
+        if PoppedNode not in explored:
+            explored.append(PoppedNode)
+        for li in AdjcListDict[PoppedNode]:  # taking the list-elements foreach Dictionary item
+            Stack.append(li)
+
+    print(explored)  # traversal: sequence of visiting nodes
+
+def Search(AdLiDic,NodeToSearch):
+    Sta=['g']
+    visitd=[]
+    found= False
+    while Sta:
+        popdnode=Sta.pop()
+        if popdnode == NodeToSearch:
+            return "found"
+        if popdnode not in visitd:
+            visitd.append(popdnode)
+            for li in AdLiDic[popdnode]:
+                    Sta.append(li)
+    return "not found"
+
 
 
 # adding real time nodes data to tree
@@ -100,8 +140,20 @@ if __name__=='__main__':
     root.insertNode('k')
 
     dict={}
+    dictRev={}
+
     filledupAdjListDict = makeAdjacencyListDictionary(root)
+    filledupAdjListDictReverse = makeAdjacencyListDictionaryReverse(root)
+    print("--------------BFS-------------")
     BFS(filledupAdjListDict)
+    print("------------DFS (right to left)---------------")
+    DFS(filledupAdjListDict)
+    print("------------DFS (left to right)---------------")
+    DFS(filledupAdjListDictReverse)
+
+
+    print(Search(filledupAdjListDict,'c'))
+
 
     # for key in filledupDict:
     #     print(f'{eachPair}:{dict[key]}')
