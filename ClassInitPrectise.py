@@ -33,6 +33,8 @@ class Cars:
             return ("Auto")
         elif self.tyresCount == 4:
             return ("car")
+        elif self.tyresCount == 12:
+            return ("truck")
         else:
             return ("truck")
 
